@@ -171,3 +171,21 @@ interface(`systemd_start_power_units',`
 
 	allow $1 power_unit_t:service start;
 ')
+
+########################################
+## <summary>
+## Allow specified domain to use log_parse_environment
+## </summary>
+## <param name="domain">
+## <summary>
+## Domain allowed access.
+## </summary>
+## </param>
+#
+interface(`systemd_internal_logging',`
+	gen_require(`
+		attribute log_parse_env;
+	')
+
+	typeattribute $1 log_parse_env;
+')
