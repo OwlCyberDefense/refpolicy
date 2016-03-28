@@ -104,6 +104,8 @@ type systemd_kmod_conf_t;
 files_config_file(systemd_kmod_conf_t)
 init_daemon_domain(systemd_tmpfiles_t, systemd_tmpfiles_exec_t)
 
+attribute log_parse_env;
+
 #
 # Unit file types
 #
@@ -120,10 +122,9 @@ kernel_domtrans_to(systemd_cgroups_t, systemd_cgroups_exec_t)
 
 init_stream_connect(systemd_cgroups_t)
 
-logging_send_syslog_msg(systemd_cgroups_t)
-
 kernel_dgram_send(systemd_cgroups_t)
 
+systemd_internal_logging(systemd_cgroups_t)
 #######################################
 #
 # locale local policy
@@ -133,9 +134,9 @@ kernel_read_kernel_sysctls(systemd_locale_t)
 
 files_read_etc_files(systemd_locale_t)
 
-logging_send_syslog_msg(systemd_locale_t)
-
 seutil_read_file_contexts(systemd_locale_t)
+
+systemd_internal_logging(systemd_locale_t)
 
 optional_policy(`
 	dbus_connect_system_bus(systemd_locale_t)
@@ -151,9 +152,9 @@ kernel_read_kernel_sysctls(systemd_hostnamed_t)
 
 files_read_etc_files(systemd_hostnamed_t)
 
-logging_send_syslog_msg(systemd_hostnamed_t)
-
 seutil_read_file_contexts(systemd_hostnamed_t)
+
+systemd_internal_logging(systemd_hostnamed_t)
 
 optional_policy(`
 	dbus_system_bus_client(systemd_hostnamed_t)
@@ -212,14 +213,14 @@ init_read_state(systemd_logind_t)
 
 locallogin_read_state(systemd_logind_t)
 
-logging_send_syslog_msg(systemd_logind_t)
-
 systemd_start_power_units(systemd_logind_t)
 
 udev_read_db(systemd_logind_t)
 udev_read_pid_files(systemd_logind_t)
 
 userdom_use_user_ttys(systemd_logind_t)
+
+systemd_internal_logging(systemd_logind_t)
 
 optional_policy(`
 	dbus_system_bus_client(systemd_logind_t)
@@ -234,7 +235,7 @@ optional_policy(`
 allow systemd_sessions_t systemd_sessions_var_run_t:file manage_file_perms;
 files_pid_filetrans(systemd_sessions_t, systemd_sessions_var_run_t, file)
 
-logging_send_syslog_msg(systemd_sessions_t)
+systemd_internal_logging(systemd_sessions_t)
 
 #########################################
 #
@@ -260,9 +261,9 @@ auth_manage_login_records(systemd_tmpfiles_t)
 auth_relabel_login_records(systemd_tmpfiles_t)
 auth_setattr_login_records(systemd_tmpfiles_t)
 
-logging_send_syslog_msg(systemd_tmpfiles_t)
-
 seutil_read_file_contexts(systemd_tmpfiles_t)
+
+systemd_internal_logging(systemd_tmpfiles_t)
 
 tunable_policy(`systemd_tmpfiles_manage_all',`
 	# systemd-tmpfiles can be configured to manage anything.
@@ -272,3 +273,11 @@ tunable_policy(`systemd_tmpfiles_manage_all',`
 	files_relabel_non_security_dirs(systemd_tmpfiles_t)
 	files_relabel_non_security_files(systemd_tmpfiles_t)
 ')
+
+# Internal logging
+init_read_state(log_parse_env)
+kernel_read_system_state(log_parse_env)
+dev_write_kmsg(log_parse_env)
+logging_send_syslog_msg(log_parse_env)
+term_use_console(log_parse_env)
+dontaudit log_parse_env self:capability net_admin;
