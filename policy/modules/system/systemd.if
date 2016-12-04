@@ -1,4 +1,5 @@
 ## <summary>Systemd components (not PID 1)</summary>
+## <required val="debian," />
 
 ######################################
 ## <summary>

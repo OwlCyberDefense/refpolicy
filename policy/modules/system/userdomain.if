@@ -1,4 +1,5 @@
 ## <summary>Policy for user domains</summary>
+## <required val="debian," />
 
 #######################################
 ## <summary>
@@ -778,7 +779,7 @@ template(`userdom_common_user_template',`
 		virt_home_filetrans_virt_home($1_t, dir, ".virtinst")
 		virt_home_filetrans_virt_content($1_t, dir, "isos")
 		virt_home_filetrans_svirt_home($1_t, dir, "qemu")
-		virt_home_filetrans_virt_home($1_t, dir, "VirtualMachines")	
+		virt_home_filetrans_virt_home($1_t, dir, "VirtualMachines")
 	')
 ')
 

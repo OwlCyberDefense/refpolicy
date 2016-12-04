@@ -1,4 +1,5 @@
 ## <summary>Policy for system libraries.</summary>
+## <required val="debian," />
 
 ########################################
 ## <summary>
