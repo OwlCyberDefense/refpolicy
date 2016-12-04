@@ -448,6 +448,8 @@ allow semanage_t self:fifo_file rw_fifo_file_perms;
 
 allow semanage_t policy_config_t:file rw_file_perms;
 
+allow semanage_t policy_src_t:dir search_dir_perms;
+
 filetrans_pattern(semanage_t, selinux_config_t, semanage_store_t, dir, "modules")
 
 allow semanage_t semanage_tmp_t:dir manage_dir_perms;
