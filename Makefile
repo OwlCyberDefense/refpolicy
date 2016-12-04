@@ -184,6 +184,7 @@ endif
 # enable distribution-specific policy
 ifneq ($(DISTRO),)
 	M4PARAM += -D distro_$(DISTRO)
+	gendoc += -D $(DISTRO)
 endif
 
 ifeq "$(DISTRO)" "ubuntu"
