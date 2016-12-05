@@ -1,4 +1,5 @@
 ## <summary>Common policy for authentication and user login.</summary>
+## <required val="debian," />
 
 ########################################
 ## <summary>
