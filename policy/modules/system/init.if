@@ -809,7 +809,7 @@ interface(`init_udp_send',`
 
 ########################################
 ## <summary>
-##	Get all service status (systemd).
+##	Get the system status (systemd).
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -827,7 +827,7 @@ interface(`init_get_system_status',`
 
 ########################################
 ## <summary>
-##	Enable all systemd services (systemd).
+##	Enable the system (systemd).
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -845,7 +845,7 @@ interface(`init_enable',`
 
 ########################################
 ## <summary>
-##	Disable all services (systemd).
+##	Disable the system (systemd).
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -863,7 +863,7 @@ interface(`init_disable',`
 
 ########################################
 ## <summary>
-##	Reload all services (systemd).
+##	Reload the system (systemd).
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -877,6 +877,24 @@ interface(`init_reload',`
 	')
 
 	allow $1 init_t:system reload;
+')
+
+########################################
+## <summary>
+##	Stop the system (systemd).
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_stop',`
+	gen_require(`
+		type init_t;
+	')
+
+	allow $1 init_t:system stop;
 ')
 
 ########################################
