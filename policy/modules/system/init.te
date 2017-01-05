@@ -900,11 +900,6 @@ optional_policy(`
 ')
 
 optional_policy(`
-	ipsec_read_config(initrc_t)
-	ipsec_manage_pid(initrc_t)
-')
-
-optional_policy(`
 	iscsi_stream_connect(initrc_t)
 	iscsi_read_lib_files(initrc_t)
 ')
