@@ -1826,6 +1826,119 @@ interface(`auth_use_nsswitch',`
 
 ########################################
 ## <summary>
+##	Read utmp file.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`auth_read_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	files_search_pids($1)
+	allow $1 utmp_t:file read_file_perms;
+')
+
+########################################
+## <summary>
+##	Write and read utmp file.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`auth_rw_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	files_search_pids($1)
+	allow $1 utmp_t:file rw_file_perms;
+')
+
+########################################
+## <summary>
+##	Ignore write access on utmp file.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`auth_dontaudit_write_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	dontaudit $1 utmp_t:file write;
+')
+
+########################################
+## <summary>
+##	Ignore read and write access on utmp file.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`auth_dontaudit_rw_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	dontaudit $1 utmp_t:file rw_file_perms;
+')
+
+########################################
+## <summary>
+##	Ignore lock access on utmp file.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`auth_dontaudit_lock_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	dontaudit $1 utmp_t:file lock;
+')
+
+########################################
+## <summary>
+##	Create files in /run with the
+##	utmp file type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`auth_filetrans_utmp',`
+	gen_require(`
+		type utmp_t;
+	')
+
+	refpolicywarn(`$0($*) has been deprecated.')
+
+	files_pid_filetrans($1, utmp_t, file, "utmp")
+')
+
+########################################
+## <summary>
 ##	Unconfined access to the authlogin module.
 ## </summary>
 ## <desc>

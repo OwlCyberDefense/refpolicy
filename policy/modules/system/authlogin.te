@@ -76,6 +76,12 @@ type utempter_exec_t;
 application_domain(utempter_t, utempter_exec_t)
 
 #
+# utmp_t is the type for /run/utmp_t
+#
+type utmp_t;
+files_pid_file(utmp_t)
+
+#
 # var_auth_t is the type of /var/lib/auth, usually
 # used for auth data in pam_able
 #

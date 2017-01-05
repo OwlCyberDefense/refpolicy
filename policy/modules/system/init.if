@@ -2135,7 +2135,7 @@ interface(`init_script_tmp_filetrans',`
 ##	</summary>
 ## </param>
 #
-interface(`init_getattr_utmp',`
+interface(`init_getattr_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2145,7 +2145,7 @@ interface(`init_getattr_utmp',`
 
 ########################################
 ## <summary>
-##	Read utmp.
+##	Get the attributes of init script process id files. (Deprecated)
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2153,7 +2153,23 @@ interface(`init_getattr_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_read_utmp',`
+interface(`init_getattr_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_getattr_initrc($*)
+	auth_read_utmp($*)
+')
+
+########################################
+## <summary>
+##	Read init script process id files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_read_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2164,7 +2180,23 @@ interface(`init_read_utmp',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to write utmp.
+##	Read utmp. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_read_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_read_initrc($*)
+	auth_read_utmp($*)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to write init script process id files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2172,7 +2204,7 @@ interface(`init_read_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_dontaudit_write_utmp',`
+interface(`init_dontaudit_write_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2182,7 +2214,42 @@ interface(`init_dontaudit_write_utmp',`
 
 ########################################
 ## <summary>
-##	Write to utmp.
+##	Do not audit attempts to write utmp. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`init_dontaudit_write_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_dontaudit_write_initrc($*)
+	auth_dontaudit_write_utmp($*)
+')
+
+########################################
+## <summary>
+##	Write to init script process id files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_write_initrc',`
+	gen_require(`
+		type initrc_var_run_t;
+	')
+
+	files_list_pids($1)
+	allow $1 initrc_var_run_t:file { getattr open write };
+')
+
+########################################
+## <summary>
+##	Write to utmp. (Deprecated)
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2191,12 +2258,9 @@ interface(`init_dontaudit_write_utmp',`
 ## </param>
 #
 interface(`init_write_utmp',`
-	gen_require(`
-		type initrc_var_run_t;
-	')
-
-	files_list_pids($1)
-	allow $1 initrc_var_run_t:file { getattr open write };
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_write_initrc($*)
+	auth_rw_utmp($*)
 ')
 
 ########################################
@@ -2210,7 +2274,7 @@ interface(`init_write_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_dontaudit_lock_utmp',`
+interface(`init_dontaudit_lock_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2220,7 +2284,24 @@ interface(`init_dontaudit_lock_utmp',`
 
 ########################################
 ## <summary>
-##	Read and write utmp.
+##	Do not audit attempts to lock
+##	init script pid files. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`init_dontaudit_lock_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_dontaudit_lock_initrc($*)
+	auth_dontaudit_lock_utmp($*)
+')
+
+########################################
+## <summary>
+##	Read and write init script pid files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2228,7 +2309,7 @@ interface(`init_dontaudit_lock_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_rw_utmp',`
+interface(`init_rw_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2239,7 +2320,24 @@ interface(`init_rw_utmp',`
 
 ########################################
 ## <summary>
-##	Do not audit attempts to read and write utmp.
+##	Read and write utmp. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_rw_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_rw_initrc($*)
+	auth_rw_utmp($*)
+')
+
+########################################
+## <summary>
+##	Do not audit attempts to read and
+##	write init script pid files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2247,7 +2345,7 @@ interface(`init_rw_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_dontaudit_rw_utmp',`
+interface(`init_dontaudit_rw_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2257,7 +2355,23 @@ interface(`init_dontaudit_rw_utmp',`
 
 ########################################
 ## <summary>
-##	Create, read, write, and delete utmp.
+##	Do not audit attempts to read and write utmp. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain to not audit.
+##	</summary>
+## </param>
+#
+interface(`init_dontaudit_rw_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_dontaudit_rw_initrc($*)
+	auth_dontaudit_rw_utmp($*)
+')
+
+########################################
+## <summary>
+##	Create, read, write, and delete init script pid files.
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2265,7 +2379,7 @@ interface(`init_dontaudit_rw_utmp',`
 ##	</summary>
 ## </param>
 #
-interface(`init_manage_utmp',`
+interface(`init_manage_initrc',`
 	gen_require(`
 		type initrc_var_run_t;
 	')
@@ -2276,8 +2390,24 @@ interface(`init_manage_utmp',`
 
 ########################################
 ## <summary>
+##	Create, read, write, and delete utmp. (Deprecated)
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`init_manage_utmp',`
+	refpolicywarn(`$0($*) has been deprecated.')
+	init_manage_initrc($*)
+	auth_rw_utmp($*)
+')
+
+########################################
+## <summary>
 ##	Create files in /var/run with the
-##	utmp file type.
+##	utmp file type. (Deprecated)
 ## </summary>
 ## <param name="domain">
 ##	<summary>
@@ -2286,11 +2416,8 @@ interface(`init_manage_utmp',`
 ## </param>
 #
 interface(`init_pid_filetrans_utmp',`
-	gen_require(`
-		type initrc_var_run_t;
-	')
-
-	files_pid_filetrans($1, initrc_var_run_t, file, "utmp")
+	refpolicywarn(`$0($*) has been deprecated.')
+	auth_filetrans_utmp($1)
 ')
 
 ########################################
