@@ -1167,7 +1167,8 @@ template(`userdom_admin_user_template',`
 	# $1_t local policy
 	#
 
-	allow $1_t self:capability ~{ audit_control audit_write sys_module };
+	allow $1_t self:capability ~{ sys_module audit_control audit_write };
+	allow $1_t self:capability2 wake_alarm;
 	allow $1_t self:process { setexec setfscreate };
 	allow $1_t self:netlink_audit_socket nlmsg_readpriv;
 	allow $1_t self:tun_socket create;
