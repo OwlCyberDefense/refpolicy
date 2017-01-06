@@ -4988,6 +4988,24 @@ interface(`dev_rw_xserver_misc',`
 
 ########################################
 ## <summary>
+##	Delete X server miscellaneous devices.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_delete_xserver_misc_dev',`
+	gen_require(`
+		type device_t, xserver_misc_device_t;
+	')
+
+	delete_chr_files_pattern($1, device_t, xserver_misc_device_t)
+')
+
+########################################
+## <summary>
 ##	Read and write to the zero device (/dev/zero).
 ## </summary>
 ## <param name="domain">
