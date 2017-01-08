@@ -1,23 +1,24 @@
-HOME_DIR/\.ssh(/.*)?			gen_context(system_u:object_r:ssh_home_t,s0)
+HOME_DIR/\.ssh(/.*)?				gen_context(system_u:object_r:ssh_home_t,s0)
 
-/etc/ssh/primes			--	gen_context(system_u:object_r:sshd_key_t,s0)
-/etc/ssh/ssh_host.*_key		--	gen_context(system_u:object_r:sshd_key_t,s0)
+/etc/ssh(/.*)?					gen_context(system_u:object_r:ssh_conf_t,s0)
+/etc/ssh/primes				--	gen_context(system_u:object_r:sshd_key_t,s0)
+/etc/ssh/ssh_host.*_key			--	gen_context(system_u:object_r:sshd_key_t,s0)
 
-/usr/bin/ssh			--	gen_context(system_u:object_r:ssh_exec_t,s0)
-/usr/bin/ssh-agent		--	gen_context(system_u:object_r:ssh_agent_exec_t,s0)
-/usr/bin/ssh-keygen		--	gen_context(system_u:object_r:ssh_keygen_exec_t,s0)
+/run/sshd(/.*)?					gen_context(system_u:object_r:sshd_pid_t,s0)
+/run/sshd\.init\.pid			--	gen_context(system_u:object_r:sshd_pid_t,s0)
+/run/sshd\.pid				--	gen_context(system_u:object_r:sshd_pid_t,s0)
 
-/usr/lib/openssh/ssh-keysign	--	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
-/usr/lib/ssh/ssh-keysign	--	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
+/usr/bin/ssh				--	gen_context(system_u:object_r:ssh_exec_t,s0)
+/usr/bin/ssh-agent			--	gen_context(system_u:object_r:ssh_agent_exec_t,s0)
+/usr/bin/ssh-keygen			--	gen_context(system_u:object_r:ssh_keygen_exec_t,s0)
+
+/usr/lib/openssh/ssh-keysign		--	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
+/usr/lib/ssh/ssh-keysign		--	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
 
 /usr/lib/systemd/system/ssh.*		--	gen_context(system_u:object_r:sshd_unit_t,s0)
 /usr/lib/systemd/system/sshdgenkeys.*	--	gen_context(system_u:object_r:sshd_keygen_unit_t,s0)
 /usr/lib/systemd/system/sshd-keygen.*	--	gen_context(system_u:object_r:sshd_keygen_unit_t,s0)
 
-/usr/libexec/openssh/ssh-keysign --	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
+/usr/libexec/openssh/ssh-keysign	--	gen_context(system_u:object_r:ssh_keysign_exec_t,s0)
 
-/usr/sbin/sshd			--	gen_context(system_u:object_r:sshd_exec_t,s0)
-
-/run/sshd(/.*)?			gen_context(system_u:object_r:sshd_var_run_t,s0)
-/run/sshd\.init\.pid	--	gen_context(system_u:object_r:sshd_var_run_t,s0)
-/run/sshd\.pid		--	gen_context(system_u:object_r:sshd_var_run_t,s0)
+/usr/sbin/sshd				--	gen_context(system_u:object_r:sshd_exec_t,s0)
