@@ -72,11 +72,6 @@ interface(`unconfined_domain_noaudit',`
 	')
 
 	optional_policy(`
-		ipsec_setcontext_default_spd($1)
-		ipsec_match_default_spd($1)
-	')
-
-	optional_policy(`
 		nscd_unconfined($1)
 	')
 
