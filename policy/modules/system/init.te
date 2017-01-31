@@ -332,6 +332,7 @@ ifdef(`distro_redhat',`
 
 optional_policy(`
 	auth_rw_login_records(init_t)
+	auth_rw_utmp(init_t)
 ')
 
 optional_policy(`
@@ -545,6 +546,7 @@ auth_read_pam_pid(initrc_t)
 auth_delete_pam_pid(initrc_t)
 auth_delete_pam_console_data(initrc_t)
 auth_use_nsswitch(initrc_t)
+auth_rw_utmp(initrc_t)
 
 libs_rw_ld_so_cache(initrc_t)
 libs_exec_lib_files(initrc_t)
