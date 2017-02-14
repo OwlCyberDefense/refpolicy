@@ -57,7 +57,6 @@ template(`ssh_basic_client_template',`
 	#
 
 	allow $1_ssh_t self:capability { setuid setgid dac_override dac_read_search };
-	allow $1_ssh_t self:process ~{ ptrace setcurrent setexec setfscreate setrlimit execmem execstack execheap };
 	allow $1_ssh_t self:fd use;
 	allow $1_ssh_t self:fifo_file rw_fifo_file_perms;
 	allow $1_ssh_t self:unix_dgram_socket { create_socket_perms sendto };
@@ -143,6 +142,8 @@ template(`ssh_basic_client_template',`
 
 	seutil_read_config($1_ssh_t)
 
+	ssh_read_conf($1_ssh_t)
+
 	optional_policy(`
 		kerberos_use($1_ssh_t)
 	')
@@ -178,10 +179,12 @@ template(`ssh_server_template', `
 	type $1_tmpfs_t;
 	files_tmpfs_file($1_tmpfs_t)
 
-	type $1_var_run_t;
-	files_pid_file($1_var_run_t)
+	type $1_pid_t;
+	typealias $1_pid_t alias $1_var_run_t;
+	files_pid_file($1_pid_t)
 
 	allow $1_t self:capability { kill sys_chroot sys_nice sys_resource chown dac_override fowner fsetid setgid setuid sys_tty_config };
+	dontaudit $1_t self:capability net_admin;
 	allow $1_t self:fifo_file rw_fifo_file_perms;
 	allow $1_t self:process { signal getsched setsched setrlimit setexec setkeycreate };
 	allow $1_t self:tcp_socket create_stream_socket_perms;
@@ -196,9 +199,9 @@ template(`ssh_server_template', `
 	manage_files_pattern($1_t, $1_tmpfs_t, $1_tmpfs_t)
 	fs_tmpfs_filetrans($1_t, $1_tmpfs_t, file)
 
-	allow $1_t $1_var_run_t:dir search_dir_perms;
-	allow $1_t $1_var_run_t:file manage_file_perms;
-	files_pid_filetrans($1_t, $1_var_run_t, file)
+	allow $1_t $1_pid_t:dir search_dir_perms;
+	allow $1_t $1_pid_t:file manage_file_perms;
+	files_pid_filetrans($1_t, $1_pid_t, file)
 
 	can_exec($1_t, sshd_exec_t)
 
@@ -247,6 +250,8 @@ template(`ssh_server_template', `
 	userdom_create_all_users_keys($1_t)
 	userdom_dontaudit_relabelfrom_user_ptys($1_t)
 	userdom_search_user_home_dirs($1_t)
+
+	ssh_read_conf($1_t)
 
 	# Allow checking users mail at login
 	optional_policy(`
@@ -581,20 +586,6 @@ interface(`ssh_dontaudit_rw_tcp_sockets',`
 
 ########################################
 ## <summary>
-##	Connect to SSH daemons over TCP sockets.  (Deprecated)
-## </summary>
-## <param name="domain">
-##	<summary>
-##	Domain allowed access.
-##	</summary>
-## </param>
-#
-interface(`ssh_tcp_connect',`
-	refpolicywarn(`$0($*) has been deprecated.')
-')
-
-########################################
-## <summary>
 ##	Execute the ssh daemon sshd domain.
 ## </summary>
 ## <param name="domain">
@@ -761,4 +752,23 @@ interface(`ssh_delete_tmp',`
 
 	files_search_tmp($1)
 	delete_files_pattern($1, sshd_tmp_t, sshd_tmp_t)
+')
+
+#######################################
+## <summary>
+##	Read the ssh conf files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`ssh_read_conf',`
+	gen_require(`
+		type ssh_conf_t;
+	')
+
+	files_search_etc($1)
+	read_files_pattern($1, ssh_conf_t, ssh_conf_t)
 ')
