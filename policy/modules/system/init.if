@@ -1395,6 +1395,7 @@ interface(`init_all_labeled_script_domtrans',`
 ## <param name="init_script_file">
 ##	<summary>
 ##	Labeled init script file.
+##	May be empty for systemd support only.
 ##	</summary>
 ## </param>
 ## <param name="unit" optional="true">
@@ -1409,15 +1410,17 @@ interface(`init_startstop_service',`
 	')
 
 	ifndef(`direct_sysadm_daemon',`
-		ifdef(`distro_gentoo',`
-			# for OpenRC
-			seutil_labeled_init_script_run_runinit($1, $2, $4)
-		',`
-			# rules for sysvinit / upstart
-			init_labeled_script_domtrans($1, $4)
-			domain_system_change_exemption($1)
-			role_transition $2 $4 system_r;
-			allow $2 system_r;
+		ifelse(`$4',`',`',`
+			ifdef(`distro_gentoo',`
+				# for OpenRC
+				seutil_labeled_init_script_run_runinit($1, $2, $4)
+			',`
+				# rules for sysvinit / upstart
+				init_labeled_script_domtrans($1, $4)
+				domain_system_change_exemption($1)
+				role_transition $2 $4 system_r;
+				allow $2 system_r;
+			')
 		')
 
 		ifdef(`init_systemd',`
