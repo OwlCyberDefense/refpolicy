@@ -508,10 +508,18 @@ ifdef(`init_systemd',`
 	allow syslogd_t self:capability { chown setgid setuid };
 	allow syslogd_t self:netlink_audit_socket { getattr getopt read setopt write };
 
+	# create /run/log
+	files_pid_filetrans(syslogd_t, var_log_t, dir, "log")
+
+	allow syslogd_t syslogd_var_run_t:dir create;
+	allow syslogd_t syslogd_var_run_t:sock_file write;
+
 	kernel_use_fds(syslogd_t)
 	kernel_getattr_dgram_sockets(syslogd_t)
 	kernel_rw_unix_dgram_sockets(syslogd_t)
 	kernel_rw_stream_sockets(syslogd_t)
+
+	fs_search_cgroup_dirs(syslogd_t)
 
 	init_daemon_pid_file(syslogd_var_run_t, dir, "syslogd")
 	init_dgram_send(syslogd_t)
