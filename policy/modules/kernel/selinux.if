@@ -32,6 +32,8 @@
 ## </param>
 #
 interface(`selinux_labeled_boolean',`
+	refpolicywarn(`$0($*) has been deprecated.')
+
 	gen_require(`
 		attribute boolean_type;
 	')

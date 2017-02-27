@@ -20,8 +20,8 @@ attribute can_setenforce;
 attribute can_setsecparam;
 attribute selinux_unconfined_type;
 
-type secure_mode_policyload_t;
-selinux_labeled_boolean(secure_mode_policyload_t, secure_mode_policyload)
+type secure_mode_policyload_t, boolean_type;
+genfscon selinuxfs /booleans/secure_mode_policyload gen_context(system_u:object_r:secure_mode_policyload_t,s0)
 
 #
 # security_t is the target type when checking
