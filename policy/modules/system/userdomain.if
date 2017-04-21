@@ -1013,8 +1013,6 @@ template(`userdom_restricted_xwindows_user_template',`
 	logging_send_audit_msgs($1_t)
 	selinux_get_enforce_mode($1_t)
 
-	xserver_restricted_role($1_r, $1_t)
-
 	optional_policy(`
 		alsa_read_config($1_t)
 	')
@@ -1050,6 +1048,10 @@ template(`userdom_restricted_xwindows_user_template',`
 
 	optional_policy(`
 		setroubleshoot_dontaudit_stream_connect($1_t)
+	')
+
+	optional_policy(`
+		xserver_restricted_role($1_r, $1_t)
 	')
 ')
 
