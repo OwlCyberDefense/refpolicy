@@ -162,6 +162,7 @@ ifdef(`distro_suse', `
 
 /dev/mfpports/.*	-c	gen_context(system_u:object_r:printer_device_t,s0)
 
+/dev/mqueue		-d	gen_context(system_u:object_r:tmpfs_t,s0)
 /dev/mqueue(/.*)?		<<none>>
 
 /dev/mvideo/.*		-c	gen_context(system_u:object_r:xserver_misc_device_t,s0)
