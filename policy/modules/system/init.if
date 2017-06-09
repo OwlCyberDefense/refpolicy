@@ -611,6 +611,26 @@ interface(`init_domtrans',`
 
 ########################################
 ## <summary>
+##	Check if init is executable. (DAC wise)
+## </summary>
+## <param name="domain">
+##      <summary>
+##      Domain allowed access.
+##      </summary>
+## </param>
+## <rolecap/>
+#
+interface(`init_check_exec',`
+        gen_require(`
+                type init_exec_t;
+        ')
+
+        corecmd_search_bin($1)
+        allow $1 init_exec_t:file { execute getattr };
+')
+
+########################################
+## <summary>
 ##	Execute the init program in the caller domain.
 ## </summary>
 ## <param name="domain">

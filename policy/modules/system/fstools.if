@@ -175,6 +175,36 @@ interface(`fstools_write_log',`
 
 ########################################
 ## <summary>
+##	Create runtime files with the fsadm private type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+## <param name="object">
+##	<summary>
+##	The object class of the object being created.
+##	</summary>
+## </param>
+## <param name="name" optional="true">
+##	<summary>
+##	The name of the object being created.
+##	</summary>
+## </param>
+#
+interface(`fstools_pid_filetrans',`
+	gen_require(`
+		type fsadm_run_t;
+	')
+
+	files_search_pids($1)
+
+	files_pid_filetrans($1, fsadm_run_t, $2, $3)
+')
+
+########################################
+## <summary>
 ##	Create, read, write, and delete filesystem tools
 ##	runtime files.
 ## </summary>

@@ -76,10 +76,10 @@ interface(`bootloader_exec',`
 #
 interface(`bootloader_read_config',`
 	gen_require(`
-		type bootloader_etc_t;
+		type bootloader_conf_t;
 	')
 
-	allow $1 bootloader_etc_t:file read_file_perms;
+	allow $1 bootloader_conf_t:file read_file_perms;
 ')
 
 ########################################
@@ -96,10 +96,10 @@ interface(`bootloader_read_config',`
 #
 interface(`bootloader_rw_config',`
 	gen_require(`
-		type bootloader_etc_t;
+		type bootloader_conf_t;
 	')
 
-	allow $1 bootloader_etc_t:file rw_file_perms;
+	allow $1 bootloader_conf_t:file rw_file_perms;
 ')
 
 ########################################
