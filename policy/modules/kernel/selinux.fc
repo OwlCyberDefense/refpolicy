@@ -1,1 +1,5 @@
 # This module currently does not have any file contexts.
+
+/sys/fs/selinux(/.*)?						gen_context(system_u:object_r:security_t,s0)
+/sys/fs/selinux/null					-c	gen_context(system_u:object_r:null_device_t,s0)
+/sys/fs/selinux/booleans/secure_mode_policyload		--	gen_context(system_u:object_r:secure_mode_policyload_t,s0)
